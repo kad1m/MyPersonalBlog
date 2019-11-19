@@ -1,0 +1,134 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+ <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category_post' category=post.category%}">{{ post.category }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'post_detail' pk=post.pk%}">{{ post.title }}</a></li>
+            </ol>
+        </nav>
+        <!-- Title -->
+        <h1 class="mt-4">{{ post.title}}</h1>
+          {% if user.is_authenticated %}
+            {% if post.published_date %}
+            <a href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+            <a href="{% url 'post_delete' pk=post.pk %}">Delete</a>
+            {% else %}
+            <a href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+            <a href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+            <a href="{% url 'post_delete' pk=post.pk %}">Delete</a>
+            {% endif %}
+          {% endif %}
+
+        <!-- Author -->
+        <p class="lead">
+          {{ post.published_date }}
+            by
+          <a href="#">{{ post.author }}</a>
+        </p>
+
+        <hr>
+
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="http://placehold.it/900x400" alt="">
+
+        <hr>
+        <!-- Post Content -->
+        <p class="lead">{{ post.text }}</p>
+
+        <hr>
+
+        <!-- Comments Form -->
+        <div class="card my-4">
+          <h5 class="card-header">Leave a Comment:</h5>
+          <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+              <div class="form-group">
+
+                {{ form.text }}
+                <textarea class="form-control" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        {% for comment in post.comments.all %}
+        {% if user.is_authenticated or comment.approved_comment %}
+        <!-- Single Comment -->
+        <div class="media mb-4">
+          <div class="media-body">
+            <h5 class="mt-0">{{ comment.author }}  {% if not comment.approved_comment %}
+                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">Удалить</span></a>
+                <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}">Опубликовать</span></a>
+            {% endif %}</h5>
+            {{ comment.text|linebreaks }}
+              <hr>
+          </div>
+
+        </div>
+
+        {% endif %}
+          {% endfor %}
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-4">
+
+        <!-- Search Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Search</h5>
+          <div class="card-body">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Categories</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="list-unstyled mb-0">
+                  {% for category in categories %}
+                    <li>
+                      <a href="{% url 'category_post' category=category.category%}">{{ category.category }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Side Widget</h5>
+          <div class="card-body">
+            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+{% endblock %}
+
+  <!-- /.container -->
