@@ -52,10 +52,12 @@
                  <div class="dropdown-menu">
                     <div class="dropdown-item">Hello {{ user.username }}</div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'post_new' %}">Add post</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'post_draft_list' %}">Draft</a>
-                    <div class="dropdown-divider"></div>
+                    {% if user.is_staff %}
+                        <a class="dropdown-item" href="{% url 'post_new' %}">Add post</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'post_draft_list' %}">Draft</a>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
                     <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
                  </div>
           </li>
