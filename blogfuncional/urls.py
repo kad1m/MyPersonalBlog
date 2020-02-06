@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
 
 from django.conf import settings
@@ -14,5 +15,8 @@ urlpatterns = [
     path('comment/<int:pk>/approve/', views.comment_approve, name='comment_approve'),
     path('comment/<int:pk>/remove/', views.comment_remove, name='comment_remove'),
     path('post/<pk>/delete/', views.post_delete, name='post_delete'),
-    path('category/<str:category>', views.category_post, name='category_post')
+    path('category/<str:category>', views.category_post, name='category_post'),
+    url(r'^signup/$', views.signup, name='signup'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

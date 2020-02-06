@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blogfuncional',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +73,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Blog.wsgi.application'
+
+# Email configuration
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'youremail@site.com'
+EMAIL_HOST_PASSWORD = 'yourpassword'
+EMAIL_PORT = 587
 
 
 # Database
